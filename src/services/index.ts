@@ -2,6 +2,7 @@ import axios from "axios";
 // import path from "path";
 // import fs from "fs";
 import { CalDavMapper, CalednarEntity } from "../mappers";
+// TODO make app use raw loader for xml files ionstead of providing string
 // import body from "../../res/caldav_all_events.xml";
 
 const ResourceService = {
