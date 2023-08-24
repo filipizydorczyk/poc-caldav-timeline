@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import moment from "moment";
+import ReactTimeline from "react-calendar-timeline";
+import "react-calendar-timeline/lib/Timeline.css";
+import { CalDavService } from "./services";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [items, setItems] = useState<any[]>([]);
+
+    useEffect(() => {
+        CalDavService.getAllEvents(
+            process.env.REACT_APP_NEXTCLOUD_CALENDAR_URL || ""
+        ).then((response) => {
+            setItems(response.map((item) => ({ ...item, group: 1 })));
+        });
+    }, []);
+
+    return (
+        <ReactTimeline
+            groups={[{ id: 1, title: "Wydarzenia" }]}
+            items={items}
+            defaultTimeStart={moment().add(-12, "hour")}
+            defaultTimeEnd={moment().add(12, "hour")}
+        />
+    );
+};
 
 export default App;
